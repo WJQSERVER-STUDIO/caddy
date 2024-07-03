@@ -1,0 +1,60 @@
+name: Caddy Build
+on:
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, darwin]
+        goarch: [amd64, arm64]
+        exclude:
+        - goos: darwin
+          goarch: arm64
+          
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: APT安装依赖
+        run: |
+          sudo apt update
+          sudo apt install curl vim wget gnupg dpkg apt-transport-https lsb-release ca-certificates tar zstd -y
+
+      - name: 安装GO环境
+        run: |
+          wget https://go.dev/dl/go1.22.4.linux-amd64.tar.gz
+          sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.22.4.linux-amd64.tar.gz
+          echo "export PATH=\$PATH:/usr/local/go/bin" >> $GITHUB_ENV
+          source $GITHUB_ENV
+          go version
+
+      - name: 部署Xcaddy
+        run: |
+          curl -1sLf 'https://dl.cloudsmith.io/public/caddy/xcaddy/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-xcaddy-archive-keyring.gpg
+          curl -1sLf 'https://dl.cloudsmith.io/public/caddy/xcaddy/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-xcaddy.list
+          sudo apt update
+          sudo apt install -y xcaddy
+          
+      - name: 打包编译
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: |
+          xcaddy build --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/RussellLuo/caddy-ext/ratelimit --with github.com/caddy-dns/cloudflare
+          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz caddy
+          tar -c caddy | zstd -o caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.zst
+        
+      - name: 上传至Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          name: 2.8.4
+          artifacts: ./caddy*.tar.gz, ./caddy*.tar.zst
+          body: Caddy2.8.4
+          token: ${{ secrets.REPO_TOKEN }}
+          tag: 2.8.4
+          allowUpdates: true
+        env:
+          export PATH: $PATH:/usr/local/go/bin

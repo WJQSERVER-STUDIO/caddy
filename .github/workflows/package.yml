@@ -1,0 +1,43 @@
+name: 打包
+on: 
+  workflow_dispatch:
+  push:
+    tags:
+      - "*.*.*"
+      
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: 安装依赖
+      run: |
+        sudo apt update
+        sudo apt install curl wget tar unzip zstd -y
+    - name: 拉取文件
+      run: |
+        sudo wget -O caddyd.tar.gz https://github.com/WJQSERVER/caddy/releases/download/2.8.4/caddy.tar.gz
+        sudo tar -xzvf caddyd.tar.gz
+        sudo mkdir -p caddy_web
+        sudo mv caddy caddy_web/
+
+    - name: Package /pages directory
+      run: | 
+        sudo cp -r pages caddy_web/
+        sudo tar -czf caddy-linux-amd64-pages.tar.gz -C caddy_web .
+        sudo tar -I zstd -cf caddy-linux-amd64-pages.tar.zst -C caddy_web .
+
+    - name: 上传Release
+      id: create_release
+      uses: ncipollo/release-action@v1
+      with:
+        name: 2.8.4
+        artifacts: ./caddy-linux-amd64-pages.tar.gz, ./caddy-linux-amd64-pages.tar.zst
+        body: Caddy2.8.4
+        token: ${{ secrets.REPO_TOKEN }}
+        tag: 2.8.4
+        allowUpdates: true
+      env:
+        export PATH: $PATH:/usr/local/go/bin
