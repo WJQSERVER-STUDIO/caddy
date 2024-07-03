@@ -6,7 +6,7 @@
 ---
 本项目使用Github Action对Caddy进行编译并打包Docker镜像
 
-#### 插件:
+#### 插件列表:
  - github.com/caddyserver/cache-handler
  - github.com/ueffel/caddy-brotli
  - github.com/caddyserver/transform-encoder
