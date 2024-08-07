@@ -14,7 +14,7 @@ jobs:
           goarch: arm64
           
     steps:
-      - name: Checkout Repository
+      - name: 导入仓库内容
         uses: actions/checkout@v2
 
       - name: APT安装依赖
@@ -22,7 +22,7 @@ jobs:
           sudo apt update
           sudo apt install curl vim wget gnupg dpkg apt-transport-https lsb-release ca-certificates tar zstd -y
 
-      - name: Set up Go
+      - name: 部署Go环境
         uses: actions/setup-go@v3
         with:
           go-version: 1.22.6
