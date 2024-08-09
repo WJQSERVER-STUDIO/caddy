@@ -1,0 +1,59 @@
+name: XCaddy Dev
+on:
+  workflow_dispatch:
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, darwin]
+        goarch: [amd64, arm64]
+        exclude:
+        - goos: darwin
+          goarch: arm64
+          
+    steps:
+      - name: 导入仓库内容
+        uses: actions/checkout@v3
+
+      - name: 加载版本号
+        run: echo "VERSION=$(cat DEV-VERSION)" >> $GITHUB_ENV  
+
+      - name: APT安装依赖
+        run: |
+          sudo apt update
+          sudo apt install curl vim wget gnupg dpkg apt-transport-https lsb-release ca-certificates tar zstd -y
+
+      - name: 部署Go环境
+        uses: actions/setup-go@v3
+        with:
+          go-version: 1.22.6
+
+      - name: 部署Xcaddy
+        run: |
+          curl -1sLf 'https://dl.cloudsmith.io/public/caddy/xcaddy/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-xcaddy-archive-keyring.gpg
+          curl -1sLf 'https://dl.cloudsmith.io/public/caddy/xcaddy/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-xcaddy.list
+          sudo apt update
+          sudo apt install -y xcaddy
+          
+      - name: 打包编译
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: |
+          xcaddy build --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/RussellLuo/caddy-ext/ratelimit --with github.com/caddy-dns/cloudflare
+          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz caddy
+          tar -c caddy | zstd -o caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.zst
+        
+      - name: 上传至Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          name: ${{ env.VERSION }}
+          artifacts: ./caddy*.tar.gz, ./caddy*.tar.zst
+          token: ${{ secrets.REPO_TOKEN }}
+          tag: ${{ env.VERSION }}
+          allowUpdates: true
+        env:
+          export PATH: $PATH:/usr/local/go/bin

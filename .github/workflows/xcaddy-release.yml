@@ -1,4 +1,4 @@
-name: Caddy Build
+name: XCaddy Releases
 on:
   workflow_dispatch:
   
@@ -15,7 +15,10 @@ jobs:
           
     steps:
       - name: 导入仓库内容
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: 加载版本号
+        run: echo "VERSION=$(cat VERSION)" >> $GITHUB_ENV  
 
       - name: APT安装依赖
         run: |
@@ -47,11 +50,10 @@ jobs:
         id: create_release
         uses: ncipollo/release-action@v1
         with:
-          name: 2.8.4
+          name: ${{ env.VERSION }}
           artifacts: ./caddy*.tar.gz, ./caddy*.tar.zst
-          body: Caddy2.8.4
           token: ${{ secrets.REPO_TOKEN }}
-          tag: 2.8.4
+          tag: ${{ env.VERSION }}
           allowUpdates: true
         env:
           export PATH: $PATH:/usr/local/go/bin
