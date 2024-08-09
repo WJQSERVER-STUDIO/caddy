@@ -55,5 +55,6 @@ jobs:
           token: ${{ secrets.REPO_TOKEN }}
           tag: ${{ env.VERSION }}
           allowUpdates: true
+          prerelease: true
         env:
           export PATH: $PATH:/usr/local/go/bin
