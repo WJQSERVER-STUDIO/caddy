@@ -1,4 +1,4 @@
-name: Docker Releases
+name: Docker Dev
 
 on:
   workflow_dispatch:
