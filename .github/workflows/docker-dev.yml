@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - "*.*.*"
+      - "*w*"
 
 jobs:
   docker:
@@ -12,7 +12,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+        
+      - name: 加载版本号
+        run: echo "VERSION=$(cat DEV-VERSION)" >> $GITHUB_ENV
+        
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -32,7 +35,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: | 
-            wjqserver/caddy:2.8.4
+            wjqserver/caddy:${{ env.VERSION }}
             wjqserver/caddy:latest
 
       - name: 构建Alpine镜像
@@ -42,5 +45,5 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: | 
-            wjqserver/caddy:2.8.4-alpine
+            wjqserver/caddy:${{ env.VERSION }}
             wjqserver/caddy:alpine
