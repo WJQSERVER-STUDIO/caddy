@@ -1,4 +1,4 @@
-name: Caddy Build Docker
+name: Docker Releases
 
 on:
   workflow_dispatch:
