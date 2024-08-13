@@ -36,7 +36,6 @@ jobs:
           push: true
           tags: | 
             wjqserver/caddy:${{ env.VERSION }}
-            wjqserver/caddy:latest
 
       - name: 构建Alpine镜像
         uses: docker/build-push-action@v5
@@ -46,4 +45,3 @@ jobs:
           push: true
           tags: | 
             wjqserver/caddy:${{ env.VERSION }}-alpine
-            wjqserver/caddy:alpine
