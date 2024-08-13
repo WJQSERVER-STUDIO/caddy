@@ -28,7 +28,7 @@ jobs:
       - name: 部署Go环境
         uses: actions/setup-go@v3
         with:
-          go-version: 1.22.6
+          go-version: 1.23.0
 
       - name: 部署Xcaddy
         run: |
