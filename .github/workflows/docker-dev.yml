@@ -45,5 +45,5 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: | 
-            wjqserver/caddy:${{ env.VERSION }}
+            wjqserver/caddy:${{ env.VERSION }}-alpine
             wjqserver/caddy:alpine
