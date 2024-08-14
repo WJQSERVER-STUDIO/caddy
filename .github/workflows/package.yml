@@ -21,7 +21,7 @@ jobs:
         sudo apt install curl wget tar unzip zstd -y
     - name: 拉取文件
       run: |
-        sudo wget -O caddyd.tar.gz https://github.com/WJQSERVER/caddy/releases/download/2.8.4/caddy.tar.gz
+        sudo wget -O caddyd.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${{ env.VERSION }}/caddy_linux_amd64.tar.gz
         sudo tar -xzvf caddyd.tar.gz
         sudo mkdir -p caddy_web
         sudo mv caddy caddy_web/
