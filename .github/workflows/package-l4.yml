@@ -21,7 +21,7 @@ jobs:
         sudo apt install curl wget tar unzip zstd -y
     - name: 拉取文件
       run: |
-        sudo wget -O caddyd.tar.gz https://github.com/WJQSERVER/caddy/releases/download/${{ env.VERSION }}/caddy-linux-amd64.tar.gz
+        sudo wget -O caddyd.tar.gz https://github.com/WJQSERVER/caddy/releases/download/${{ env.VERSION }}/caddy-linux-amd64-l4.tar.gz
         sudo tar -xzvf caddyd.tar.gz
         sudo mkdir -p caddy_web
         sudo mv caddy caddy_web/
@@ -29,15 +29,15 @@ jobs:
     - name: Package /pages directory
       run: | 
         sudo cp -r pages caddy_web/
-        sudo tar -czf caddy-linux-amd64-pages.tar.gz -C caddy_web .
-        sudo tar -I zstd -cf caddy-linux-amd64-pages.tar.zst -C caddy_web .
+        sudo tar -czf caddy-linux-amd64-pages-l4.tar.gz -C caddy_web .
+        sudo tar -I zstd -cf caddy-linux-amd64-pages-l4.tar.zst -C caddy_web .
 
     - name: 上传Release
       id: create_release
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.VERSION }}
-        artifacts: ./caddy-linux-amd64-pages.tar.gz, ./caddy-linux-amd64-pages.tar.zst
+        artifacts: ./caddy-linux-amd64-pages-l4.tar.zst, ./caddy-linux-amd64-pages-l4.tar.zst
         token: ${{ secrets.REPO_TOKEN }}
         tag: ${{ env.VERSION }}
         allowUpdates: true
