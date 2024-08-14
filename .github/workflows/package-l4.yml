@@ -37,7 +37,7 @@ jobs:
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.VERSION }}
-        artifacts: ./caddy-linux-amd64-pages-l4.tar.zst, ./caddy-linux-amd64-pages-l4.tar.zst
+        artifacts: ./caddy-linux-amd64-pages-l4.tar.gz, ./caddy-linux-amd64-pages-l4.tar.zst
         token: ${{ secrets.REPO_TOKEN }}
         tag: ${{ env.VERSION }}
         allowUpdates: true
