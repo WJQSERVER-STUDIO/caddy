@@ -29,8 +29,8 @@ jobs:
     - name: Package /pages directory
       run: | 
         sudo cp -r pages caddy_web/
-        sudo tar -czf caddy-linux-amd64-pages.tar.gz -C caddy_web .
-        sudo tar -I zstd -cf caddy-linux-amd64-pages.tar.zst -C caddy_web .
+        sudo tar -czf caddy-linux-amd64-pages-pure.tar.gz -C caddy_web .
+        sudo tar -I zstd -cf caddy-linux-amd64-pages-pure.tar.zst -C caddy_web .
 
     - name: 上传Release
       id: create_release
