@@ -1,4 +1,4 @@
-name: Package Releases
+name: Package Pure
 on: 
   workflow_dispatch:
   push:

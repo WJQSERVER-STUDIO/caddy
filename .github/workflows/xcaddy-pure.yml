@@ -1,4 +1,4 @@
-name: XCaddy Releases
+name: XCaddy Pure
 on:
   workflow_dispatch:
   push:
