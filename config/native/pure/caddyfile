@@ -1,0 +1,50 @@
+{
+    debug
+    http_port 80
+    https_port 443
+    log {
+        level INFO
+        output file /root/data/caddy/log/caddy.log {
+            roll_size 10MB
+            roll_keep 10
+        }            
+    }        
+}
+
+(error_page) {
+    handle_errors {
+	    rewrite * /{err.status_code}.html
+	    root * /root/data/caddy/pages/errors
+        file_server
+    }
+}
+
+(encode) {
+    encode {
+	    zstd best
+		gzip 5
+		minimum_length 1024
+    }
+}
+
+(header_realip) {
+    header_up X-Real-IP {remote_host}	    
+	header_up X-Real-IP {http.request.header.CF-Connecting-IP}
+	header_up X-Forwarded-For {http.request.header.CF-Connecting-IP}
+	header_up X-Forwarded-Proto {http.request.header.CF-Visitor}
+}
+
+(buffer) {
+    flush_interval 2000s
+	buffer_responses
+	max_buffer_size 256k
+}
+
+:80 {
+	root * /root/data/caddy/pages/demo
+    file_server
+    import error_page  
+    import encode
+}
+
+import /root/data/caddy/config/*
