@@ -71,7 +71,8 @@ jobs:
           name: Daily Build - Caddy ${{ env.VERSION }}
           artifacts: ./caddy*.tar.gz, ./caddy*.tar.zst
           token: ${{ secrets.REPO_TOKEN }}
-          tag: 
+          tag: ${{ env.VERSION }}
           allowUpdates: true
-        env: ${{ env.VERSION }}
+          prerelease: true
+        env:
           export PATH: $PATH:/usr/local/go/bin
