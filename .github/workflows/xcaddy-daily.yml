@@ -1,6 +1,8 @@
 name: XCaddy Daily
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *' # 每天3点执行
   
 jobs:
   build:
@@ -72,8 +74,9 @@ jobs:
         with:
           name: Daily Build - Caddy ${{ env.VERSION }}
           artifacts: ./caddy*.tar.gz, ./caddy*.tar.zst
-          token: ${{ secrets.REPO_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ env.VERSION }}
+          body: Daily Build - Caddy ${{ env.VERSION }}
           allowUpdates: true
           prerelease: true
         env:
