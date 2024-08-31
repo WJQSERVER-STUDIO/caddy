@@ -12,6 +12,7 @@
  - github.com/caddyserver/transform-encoder
  - github.com/RussellLuo/caddy-ext/ratelimit
  - github.com/caddy-dns/cloudflare
+ - github.com/mholt/caddy-l4(仅在L4固件内包含)
 
 ## 安装
 
