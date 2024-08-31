@@ -75,7 +75,7 @@ jobs:
           name: Daily Build
           artifacts: ./caddy*.tar.gz, ./caddy*.tar.zst
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ env.VERSION }}
+          tag: daily
           body: Daily Build - Caddy ${{ env.VERSION }}
           allowUpdates: true
           prerelease: true
