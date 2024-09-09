@@ -70,7 +70,7 @@ jobs:
         with:
           name: ${{ env.VERSION }}
           artifacts: ./caddy*.tar.gz, ./caddy*.tar.zst
-          token: ${{ secrets.REPO_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ env.VERSION }}
           allowUpdates: true
         env:
