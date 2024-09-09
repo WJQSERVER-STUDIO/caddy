@@ -37,7 +37,7 @@ jobs:
           sudo apt update
           sudo apt install -y xcaddy
           
-      - name: 打包编译
+      - name: 打包编译-EXTRA
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
@@ -45,6 +45,24 @@ jobs:
           xcaddy build --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/RussellLuo/caddy-ext/ratelimit --with github.com/caddy-dns/cloudflare
           tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz caddy
           tar -c caddy | zstd -o caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.zst
+          
+      - name: 打包编译-L4
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: |
+          xcaddy build --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/RussellLuo/caddy-ext/ratelimit --with github.com/caddy-dns/cloudflare --with github.com/mholt/caddy-l4
+          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz caddy
+          tar -c caddy | zstd -o caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.zst   
+  
+      - name: 打包编译-PURE
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: |
+          xcaddy build
+          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz caddy
+          tar -c caddy | zstd -o caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.zst    
         
       - name: 上传至Release
         id: create_release
