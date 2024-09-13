@@ -1,6 +1,11 @@
 name: XCaddy Releases
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'VERSION'
   
 jobs:
   build:
