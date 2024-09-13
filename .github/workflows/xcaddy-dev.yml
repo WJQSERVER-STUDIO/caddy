@@ -1,6 +1,11 @@
 name: XCaddy Dev
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'DEV-VERSION'
   
 jobs:
   build:
@@ -9,12 +14,8 @@ jobs:
       matrix:
         goos: [linux, darwin]
         goarch: [amd64, arm64]
-        exclude:
-        - goos: darwin
-          goarch: arm64
           
     steps:
-        
       - name: 导入仓库内容
         uses: actions/checkout@v3
 
@@ -38,14 +39,32 @@ jobs:
           sudo apt update
           sudo apt install -y xcaddy
           
-      - name: 打包编译
+      - name: 打包编译-EXTRA
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
         run: |
           xcaddy build --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/RussellLuo/caddy-ext/ratelimit --with github.com/caddy-dns/cloudflare
           tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz caddy
-          tar -c caddy | zstd -o caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.zst
+          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.zst caddy
+          
+      - name: 打包编译-L4
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: |
+          xcaddy build --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/RussellLuo/caddy-ext/ratelimit --with github.com/caddy-dns/cloudflare --with github.com/mholt/caddy-l4
+          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz caddy
+          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.zst caddy
+  
+      - name: 打包编译-PURE
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+        run: |
+          xcaddy build
+          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz caddy
+          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.zst caddy  
         
       - name: 上传至Release
         id: create_release
@@ -53,7 +72,7 @@ jobs:
         with:
           name: ${{ env.VERSION }}
           artifacts: ./caddy*.tar.gz, ./caddy*.tar.zst
-          token: ${{ secrets.REPO_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ env.VERSION }}
           allowUpdates: true
           prerelease: true
