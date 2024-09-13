@@ -23,7 +23,8 @@ jobs:
       run: |
         sudo apt update
         sudo apt install curl wget tar unzip zstd -y
-    - name: 打包
+
+    - name: 打包 EXTRA
       env:
         GOOS: ${{ matrix.goos }}
         GOARCH: ${{ matrix.goarch }}
@@ -36,12 +37,38 @@ jobs:
         sudo tar -czf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages.tar.gz -C caddy_web .
         sudo tar -I zstd -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages.tar.zst -C caddy_web .
 
+    - name: 打包 L4
+      env:
+        GOOS: ${{ matrix.goos }}
+        GOARCH: ${{ matrix.goarch }}
+      run: |
+        sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${{ env.VERSION }}/caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz
+        sudo tar -xzvf caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz
+        sudo mkdir -p caddy_web
+        sudo mv caddy caddy_web/
+        sudo cp -r pages caddy_web/
+        sudo tar -czf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-l4.tar.gz -C caddy_web .
+        sudo tar -I zstd -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-l4.tar.zst -C caddy_web .
+
+    - name: 打包 Pure
+      env:
+        GOOS: ${{ matrix.goos }}
+        GOARCH: ${{ matrix.goarch }}
+      run: |
+        sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${{ env.VERSION }}/caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz
+        sudo tar -xzvf caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz
+        sudo mkdir -p caddy_web
+        sudo mv caddy caddy_web/
+        sudo cp -r pages caddy_web/
+        sudo tar -czf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-pure.tar.gz -C caddy_web .
+        sudo tar -I zstd -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-pure.tar.zst -C caddy_web .
+
     - name: 上传Release
       id: create_release
       uses: ncipollo/release-action@v1
       with:
         name: TEST
-        artifacts: ./caddy*pages.tar.gz, ./caddy*pages.tar.zst
+        artifacts: ./caddy*pages.tar.gz, ./caddy*pages.tar.zst, ./caddy*pages-l4.tar.gz, ./caddy*pages-l4.tar.zst, ./caddy*pages-pure.tar.gz, ./caddy*pages-pure.tar.zst
         token: ${{ secrets.GITHUB_TOKEN }}
         tag: TEST
         allowUpdates: true

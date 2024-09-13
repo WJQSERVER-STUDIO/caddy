@@ -11,9 +11,6 @@ jobs:
       matrix:
         goos: [linux, darwin]
         goarch: [amd64, arm64]
-        exclude:
-        - goos: darwin
-          goarch: arm64
           
     steps:
       - name: 导入仓库内容
