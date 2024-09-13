@@ -32,7 +32,7 @@ jobs:
       - name: 构建Debian镜像
         uses: docker/build-push-action@v5
         with:
-          file: ./Dockerfile_debian
+          file: ./docker/daily_debian
           platforms: linux/amd64
           push: true
           tags: | 
@@ -42,7 +42,7 @@ jobs:
       - name: 构建Alpine镜像
         uses: docker/build-push-action@v5
         with:
-          file: ./Dockerfile_alpine
+          file: ./docker/daily_alpine
           platforms: linux/amd64
           push: true
           tags: | 
