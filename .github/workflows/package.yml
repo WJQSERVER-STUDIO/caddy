@@ -35,7 +35,7 @@ jobs:
         sudo mv caddy caddy_web/
         sudo cp -r pages caddy_web/
         sudo tar -czf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages.tar.gz -C caddy_web .
-        sudo tar -I zstd -cf --zstd-compress-level=8 caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages.tar.zst -C caddy_web .
+        sudo tar -I 'zstd -8' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages.tar.zst -C caddy_web .
 
     - name: 打包 L4
       env:
@@ -48,7 +48,7 @@ jobs:
         sudo mv caddy caddy_web/
         sudo cp -r pages caddy_web/
         sudo tar -czf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-l4.tar.gz -C caddy_web .
-        sudo tar -I zstd -cf --zstd-compress-level=8 caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-l4.tar.zst -C caddy_web .
+        sudo tar -I zstd -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-l4.tar.zst -C caddy_web .
 
     - name: 打包 Pure
       env:
@@ -61,7 +61,7 @@ jobs:
         sudo mv caddy caddy_web/
         sudo cp -r pages caddy_web/
         sudo tar -czf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-pure.tar.gz -C caddy_web .
-        sudo tar -I zstd -cf --zstd-compress-level=8 caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-pure.tar.zst -C caddy_web .
+        sudo tar -I zstd -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-pure.tar.zst -C caddy_web .
 
     - name: 上传Release
       id: create_release
