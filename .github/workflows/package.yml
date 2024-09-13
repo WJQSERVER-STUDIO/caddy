@@ -67,10 +67,10 @@ jobs:
       id: create_release
       uses: ncipollo/release-action@v1
       with:
-        name: TEST
+        name: ${{ env.VERSION }}
         artifacts: ./caddy*pages.tar.gz, ./caddy*pages.tar.zst, ./caddy*pages-l4.tar.gz, ./caddy*pages-l4.tar.zst, ./caddy*pages-pure.tar.gz, ./caddy*pages-pure.tar.zst
         token: ${{ secrets.GITHUB_TOKEN }}
-        tag: TEST
+        tag: ${{ env.VERSION }}
         allowUpdates: true
       env:
         export PATH: $PATH:/usr/local/go/bin
