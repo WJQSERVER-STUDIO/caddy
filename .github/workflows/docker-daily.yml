@@ -1,4 +1,4 @@
-name: Docker Dev
+name: Docker Daily
 
 on:
   workflow_dispatch:

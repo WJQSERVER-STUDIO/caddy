@@ -1,9 +1,9 @@
-name: Package Releases
+name: Package Dev
 on: 
   workflow_dispatch:
   push:
     tags:
-      - "*.*.*"
+      - "*w*"
 jobs:
   build:
     runs-on: ubuntu-latest

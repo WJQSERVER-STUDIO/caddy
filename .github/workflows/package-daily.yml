@@ -1,4 +1,4 @@
-name: Package Releases
+name: Package Daily
 on: 
   workflow_dispatch:
   schedule:
