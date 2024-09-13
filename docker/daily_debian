@@ -17,3 +17,5 @@ RUN wget -O /usr/local/bin/init.sh https://raw.githubusercontent.com/WJQSERVER-S
 RUN chmod +x /usr/local/bin/init.sh
 
 CMD ["/usr/local/bin/init.sh"]
+
+

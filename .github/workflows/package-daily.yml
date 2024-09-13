@@ -30,7 +30,7 @@ jobs:
         GOOS: ${{ matrix.goos }}
         GOARCH: ${{ matrix.goarch }}
       run: |
-        sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${{ env.VERSION }}/caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
+        sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/daily/caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
         sudo tar -xzvf caddyd-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
         sudo mkdir -p caddy_web
         sudo mv caddy caddy_web/
@@ -43,7 +43,7 @@ jobs:
         GOOS: ${{ matrix.goos }}
         GOARCH: ${{ matrix.goarch }}
       run: |
-        sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${{ env.VERSION }}/caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz
+        sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/daily/caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz
         sudo tar -xzvf caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz
         sudo mkdir -p caddy_web
         sudo mv caddy caddy_web/
@@ -56,7 +56,7 @@ jobs:
         GOOS: ${{ matrix.goos }}
         GOARCH: ${{ matrix.goarch }}
       run: |
-        sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${{ env.VERSION }}/caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz
+        sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/daily/caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz
         sudo tar -xzvf caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz
         sudo mkdir -p caddy_web
         sudo mv caddy caddy_web/
