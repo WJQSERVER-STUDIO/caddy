@@ -1,13 +1,17 @@
-name: Package Dev
+name: Package Releases
 on: 
   workflow_dispatch:
   push:
     tags:
-      - "*w*"
-      
+      - "*.*.*"
 jobs:
-  package:
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, darwin]
+        goarch: [amd64, arm64]
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -19,26 +23,53 @@ jobs:
       run: |
         sudo apt update
         sudo apt install curl wget tar unzip zstd -y
-    - name: 拉取文件
+
+    - name: 打包 EXTRA
+      env:
+        GOOS: ${{ matrix.goos }}
+        GOARCH: ${{ matrix.goarch }}
       run: |
-        sudo wget -O caddyd.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${{ env.VERSION }}/caddy-linux-amd64.tar.gz
-        sudo tar -xzvf caddyd.tar.gz
+        sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${{ env.VERSION }}/caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
+        sudo tar -xzvf caddyd-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
         sudo mkdir -p caddy_web
         sudo mv caddy caddy_web/
-
-    - name: Package /pages directory
-      run: | 
         sudo cp -r pages caddy_web/
-        sudo tar -czf caddy-linux-amd64-pages.tar.gz -C caddy_web .
-        sudo tar -I zstd -cf caddy-linux-amd64-pages.tar.zst -C caddy_web .
+        sudo tar -czf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages.tar.gz -C caddy_web .
+        sudo tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages.tar.zst -C caddy_web .
+
+    - name: 打包 L4
+      env:
+        GOOS: ${{ matrix.goos }}
+        GOARCH: ${{ matrix.goarch }}
+      run: |
+        sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${{ env.VERSION }}/caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz
+        sudo tar -xzvf caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz
+        sudo mkdir -p caddy_web
+        sudo mv caddy caddy_web/
+        sudo cp -r pages caddy_web/
+        sudo tar -czf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-l4.tar.gz -C caddy_web .
+        sudo tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-l4.tar.zst -C caddy_web .
+
+    - name: 打包 Pure
+      env:
+        GOOS: ${{ matrix.goos }}
+        GOARCH: ${{ matrix.goarch }}
+      run: |
+        sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${{ env.VERSION }}/caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz
+        sudo tar -xzvf caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz
+        sudo mkdir -p caddy_web
+        sudo mv caddy caddy_web/
+        sudo cp -r pages caddy_web/
+        sudo tar -czf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-pure.tar.gz -C caddy_web .
+        sudo tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-pure.tar.zst -C caddy_web .
 
     - name: 上传Release
       id: create_release
       uses: ncipollo/release-action@v1
       with:
         name: ${{ env.VERSION }}
-        artifacts: ./caddy-linux-amd64-pages.tar.gz, ./caddy-linux-amd64-pages.tar.zst
-        token: ${{ secrets.REPO_TOKEN }}
+        artifacts: ./caddy*pages.tar.gz, ./caddy*pages.tar.zst, ./caddy*pages-l4.tar.gz, ./caddy*pages-l4.tar.zst, ./caddy*pages-pure.tar.gz, ./caddy*pages-pure.tar.zst
+        token: ${{ secrets.GITHUB_TOKEN }}
         tag: ${{ env.VERSION }}
         allowUpdates: true
         prerelease: true

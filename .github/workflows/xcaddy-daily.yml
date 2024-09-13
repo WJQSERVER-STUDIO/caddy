@@ -45,8 +45,8 @@ jobs:
         run: |
           xcaddy build --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/RussellLuo/caddy-ext/ratelimit --with github.com/caddy-dns/cloudflare
           tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz caddy
-          tar -c caddy | zstd -o caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.zst
-        
+          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.zst caddy
+            
       - name: 打包编译-L4
         env:
           GOOS: ${{ matrix.goos }}
@@ -54,8 +54,8 @@ jobs:
         run: |
           xcaddy build --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/RussellLuo/caddy-ext/ratelimit --with github.com/caddy-dns/cloudflare --with github.com/mholt/caddy-l4
           tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz caddy
-          tar -c caddy | zstd -o caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.zst   
-
+          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.zst caddy
+    
       - name: 打包编译-PURE
         env:
           GOOS: ${{ matrix.goos }}
@@ -63,7 +63,7 @@ jobs:
         run: |
           xcaddy build
           tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz caddy
-          tar -c caddy | zstd -o caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.zst    
+          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.zst caddy  
 
       - name: 上传至Release
         id: create_release
