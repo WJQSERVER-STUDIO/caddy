@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
 # 下载和安装 Caddy
 RUN mkdir -p /data/caddy/config
 RUN mkdir -p /data/caddy/config.d
-RUN wget -O /data/caddy/caddy.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/2.8.4/caddy-linux-amd64-pages.tar.gz
+RUN wget -O /data/caddy/caddy.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/daily/caddy-linux-amd64-pages.tar.gz
 RUN tar -xzvf /data/caddy/caddy.tar.gz -C /data/caddy 
 RUN rm /data/caddy/caddy.tar.gz 
 RUN chmod +x /data/caddy/caddy 
