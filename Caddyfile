@@ -66,12 +66,6 @@
     }    
 }
 
-(buffer) {
-    flush_interval 2000s
-	buffer_responses
-	max_buffer_size 256k
-}
-
 (rate_limit) {
     route /* {
         rate_limit {remote.ip} {args[0]}r/m 10000 429
