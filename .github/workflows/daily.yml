@@ -185,7 +185,7 @@ jobs:
       - name: 构建Debian镜像
         uses: docker/build-push-action@v5
         with:
-          file: ./${DOCKERFILE_DEBIAN}
+          file: ./${{ env.DOCKERFILE_DEBIAN }}
           platforms: linux/amd64,linux/arm64
           push: true
           tags: | 
@@ -194,7 +194,7 @@ jobs:
       - name: 构建Alpine镜像
         uses: docker/build-push-action@v5
         with:
-          file: ./${DOCKERFILE_ALPINE}
+          file: ./${{ env.DOCKERFILE_ALPINE }}
           platforms:
             linux/amd64,linux/arm64
           push: true
