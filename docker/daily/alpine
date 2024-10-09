@@ -1,6 +1,6 @@
-FROM --platform=$TARGETPLATFORM alpine:latest AS BUILD
+FROM alpine:latest AS BUILD
 
-ARG VERSION=dev-test
+ARG VERSION=daily
 ARG TARGETOS
 ARG TARGETARCH
 ARG TARGETPLATFORM
@@ -25,7 +25,7 @@ RUN wget -O /usr/local/bin/init.sh https://raw.githubusercontent.com/WJQSERVER-S
 RUN chmod +x /usr/local/bin/init.sh
 
 # 构建镜像
-FROM --platform=$TARGETPLATFORM alpine:latest
+FROM alpine:latest
 
 # 创建必要的目录
 RUN mkdir -p /data/caddy/config 
