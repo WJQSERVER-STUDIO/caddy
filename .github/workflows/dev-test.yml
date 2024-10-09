@@ -85,6 +85,7 @@ jobs:
 
   package:
     runs-on: ubuntu-latest
+    needs: build
     env:
         TEST_VERSION: dev-test
     strategy:
@@ -159,6 +160,7 @@ jobs:
         
   docker:
     runs-on: ubuntu-latest
+    needs: package
     env:
         TEST_VERSION: dev-test
         IMAGE_NAME: wjqserver/caddy
