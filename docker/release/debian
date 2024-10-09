@@ -1,0 +1,44 @@
+FROM debian:12-slim AS BUILD
+
+ARG TARGETOS
+ARG TARGETARCH
+ARG TARGETPLATFORM
+
+# 更新并安装所需的软件包
+RUN apt-get update && apt-get install -y \
+    sed wget curl tar
+RUN apt clean && rm -rf /var/lib/apt/lists/*
+
+# 下载和安装 Caddy
+RUN mkdir -p /data/caddy/config
+RUN mkdir -p /data/caddy/config.d
+RUN mkdir -p /usr/local/bin
+
+# 下载并解压 Caddy
+RUN VERSION=$(curl -s https://raw.githubusercontent.com/WJQSERVER-STUDIO/caddy/main/VERSION) && \
+    wget -O /data/caddy/caddy.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${VERSION}/caddy-${TARGETOS}-${TARGETARCH}-pages.tar.gz
+RUN tar -xzvf /data/caddy/caddy.tar.gz -C /data/caddy 
+RUN rm /data/caddy/caddy.tar.gz 
+RUN chmod +x /data/caddy/caddy 
+
+# 下载并配置 Caddyfile
+RUN wget -O /data/caddy/Caddyfile https://raw.githubusercontent.com/WJQSERVER-STUDIO/caddy/main/Caddyfile
+RUN wget -O /usr/local/bin/init.sh https://raw.githubusercontent.com/WJQSERVER-STUDIO/caddy/main/docker/release/init.sh
+RUN chmod +x /usr/local/bin/init.sh
+
+# 构建镜像
+FROM debian:12-slim
+
+# 创建必要的目录
+RUN mkdir -p /data/caddy/config 
+RUN mkdir -p /data/caddy/config.d
+
+# 复制构建阶段的文件
+COPY --from=BUILD /data/caddy /data/caddy
+COPY --from=BUILD /usr/local/bin/init.sh /usr/local/bin/init.sh
+
+# 配置权限
+RUN chmod +x /data/caddy/caddy 
+RUN chmod +x /usr/local/bin/init.sh
+
+CMD ["/usr/local/bin/init.sh"]
