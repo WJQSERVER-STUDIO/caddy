@@ -23,7 +23,7 @@ RUN chmod +x /data/caddy/caddy
 
 # 下载并配置 Caddyfile
 RUN wget -O /data/caddy/Caddyfile https://raw.githubusercontent.com/WJQSERVER-STUDIO/caddy/main/Caddyfile
-RUN wget -O /usr/local/bin/init.sh https://raw.githubusercontent.com/WJQSERVER-STUDIO/caddy/main/init.sh
+RUN wget -O /usr/local/bin/init.sh https://raw.githubusercontent.com/WJQSERVER-STUDIO/caddy/main/docker/devinit.sh
 RUN chmod +x /usr/local/bin/init.sh
 
 # 构建镜像
