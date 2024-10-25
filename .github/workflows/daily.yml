@@ -76,8 +76,8 @@ jobs:
           mkdir -p caddy-package/LICENSE
           mv caddy caddy-package/
           cp LICENSE_caddy caddy-package/LICENSE/
-          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz caddy-package .
-          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.zst caddy-package .  
+          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz -C caddy-package .
+          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.zst -C caddy-package .  
         
       - name: 上传至Release
         id: create_release
