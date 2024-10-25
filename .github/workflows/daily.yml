@@ -46,8 +46,12 @@ jobs:
           GOARCH: ${{ matrix.goarch }}
         run: |
           xcaddy build --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/RussellLuo/caddy-ext/ratelimit --with github.com/caddy-dns/cloudflare
-          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz caddy
-          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.zst caddy
+          mkdir -p caddy-package
+          mkdir -p caddy-package/LICENSE
+          mv caddy caddy-package/
+          cp LICENSE_caddy caddy-package/LICENSE/
+          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz -C caddy-package .
+          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.zst -C caddy-package .
           
       - name: 打包编译-L4
         env:
@@ -55,8 +59,12 @@ jobs:
           GOARCH: ${{ matrix.goarch }}
         run: |
           xcaddy build --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/RussellLuo/caddy-ext/ratelimit --with github.com/caddy-dns/cloudflare --with github.com/mholt/caddy-l4
-          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz caddy
-          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.zst caddy
+          mkdir -p caddy-package
+          mkdir -p caddy-package/LICENSE
+          mv caddy caddy-package/
+          cp LICENSE_caddy caddy-package/LICENSE/
+          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz -C caddy-package .
+          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.zst -C caddy-package .
   
       - name: 打包编译-PURE
         env:
@@ -64,8 +72,12 @@ jobs:
           GOARCH: ${{ matrix.goarch }}
         run: |
           xcaddy build
-          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz caddy
-          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.zst caddy  
+          mkdir -p caddy-package
+          mkdir -p caddy-package/LICENSE
+          mv caddy caddy-package/
+          cp LICENSE_caddy caddy-package/LICENSE/
+          tar -czvf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz caddy-package .
+          tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.zst caddy-package .  
         
       - name: 上传至Release
         id: create_release
@@ -110,7 +122,12 @@ jobs:
         sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${{ env.VERSION }}/caddy-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
         sudo tar -xzvf caddyd-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz
         sudo mkdir -p caddy_web
+        sudo mkdir -p caddy_web/LICENSE
         sudo mv caddy caddy_web/
+        sudo cp LICENSE caddy_web/LICENSE/
+        sudo cp LICENSE_caddy caddy_web/LICENSE/
+        sudo cp LICENSE_README.md caddy_web/LICENSE/
+        sudo cp README.md caddy_web/
         sudo cp -r pages caddy_web/
         sudo tar -czf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages.tar.gz -C caddy_web .
         sudo tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages.tar.zst -C caddy_web .
@@ -123,7 +140,12 @@ jobs:
         sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${{ env.VERSION }}/caddy-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz
         sudo tar -xzvf caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-l4.tar.gz
         sudo mkdir -p caddy_web
+        sudo mkdir -p caddy_web/LICENSE
         sudo mv caddy caddy_web/
+        sudo cp LICENSE caddy_web/LICENSE/
+        sudo cp LICENSE_caddy caddy_web/LICENSE/
+        sudo cp LICENSE_README.md caddy_web/LICENSE/
+        sudo cp README.md caddy_web/
         sudo cp -r pages caddy_web/
         sudo tar -czf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-l4.tar.gz -C caddy_web .
         sudo tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-l4.tar.zst -C caddy_web .
@@ -136,7 +158,12 @@ jobs:
         sudo wget -O caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz https://github.com/WJQSERVER-STUDIO/caddy/releases/download/${{ env.VERSION }}/caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz
         sudo tar -xzvf caddyd-${{ matrix.goos }}-${{ matrix.goarch }}-pure.tar.gz
         sudo mkdir -p caddy_web
+        sudo mkdir -p caddy_web/LICENSE
         sudo mv caddy caddy_web/
+        sudo cp LICENSE caddy_web/LICENSE/
+        sudo cp LICENSE_caddy caddy_web/LICENSE/
+        sudo cp LICENSE_README.md caddy_web/LICENSE/
+        sudo cp README.md caddy_web/
         sudo cp -r pages caddy_web/
         sudo tar -czf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-pure.tar.gz -C caddy_web .
         sudo tar -I 'zstd -15' -cf caddy-${{ matrix.goos }}-${{ matrix.goarch }}-pages-pure.tar.zst -C caddy_web .

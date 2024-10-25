@@ -31,7 +31,7 @@ docker run -d -p 80:80 -p 443:443 -v ./caddy/config:/data/caddy/config -v ./cadd
 docker run -d -p 80:80 -p 443:443 -v ./caddy/config:/data/caddy/config -v ./caddy/config.d:/data/caddy/config.d -v ./caddy/log:/data/caddy/log --restart always wjqserver/caddy:alpine
 ```    
         
-   ## Docker-Compose
+   ### Docker-Compose
     
    - Debian-slim底包
     
@@ -67,6 +67,13 @@ docker run -d -p 80:80 -p 443:443 -v ./caddy/config:/data/caddy/config -v ./cadd
                   - '80:80'      
       ```   
       
+## 许可证(License)
+
+本仓库使用双重许可证，详细说明请参看[LICENSE_README](https://github.com/WJQSERVER-STUDIO/caddy/blob/main/LICENSE_README.md)文件，：
+
+- Releases中的二进制文件`Caddy`继承[Caddy](https://github.com/caddyserver/caddy)的[Apache 2.0许可证](https://github.com/WJQSERVER-STUDIO/caddy/blob/main/LICENSE_caddy)
+- 仓库内文件(除demo页面外)使用[WSL 1.2许可证](https://github.com/WJQSERVER-STUDIO/caddy/blob/main/LICENSE)
+
 相关链接
 ---
 
