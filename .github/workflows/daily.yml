@@ -124,6 +124,7 @@ jobs:
         sudo mkdir -p caddy_web
         sudo mkdir -p caddy_web/LICENSE
         sudo mv caddy caddy_web/
+        sudo ls
         sudo cp LICENSE caddy_web/LICENSE/
         sudo cp LICENSE_caddy caddy_web/LICENSE/
         sudo cp LICENSE_README.md caddy_web/LICENSE/
