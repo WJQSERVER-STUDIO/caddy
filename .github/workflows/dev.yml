@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-        GO_VERSION: 1.23.2
+        GO_VERSION: 1.23.3
     strategy:
       matrix:
         goos: [linux, darwin]
