@@ -28,6 +28,7 @@ jobs:
       - name: APT安装依赖
         run: |
           sudo apt update
+          sudo apt upgrade -y
           sudo apt install curl vim wget gnupg dpkg apt-transport-https lsb-release ca-certificates tar zstd -y
 
       - name: 部署Go环境
