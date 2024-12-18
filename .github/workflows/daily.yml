@@ -3,7 +3,7 @@ name: Daily Build
 on:
     workflow_dispatch:
     schedule:
-      - cron: '0 3 * * *' # 每天3点执行
+      - cron: '0 17 * * *' # 每天3点执行
   
 jobs:
   build:
