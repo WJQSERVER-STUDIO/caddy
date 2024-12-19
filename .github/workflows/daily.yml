@@ -46,7 +46,7 @@ jobs:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
         run: |
-          xcaddy build master  --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/WJQSERVER/caddy-ext/ratelimit@2412182247 --with github.com/caddy-dns/cloudflare
+          xcaddy build master  --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/WJQSERVER/caddy-ext/ratelimit@master --with github.com/caddy-dns/cloudflare
           mkdir -p caddy-package
           mkdir -p caddy-package/LICENSE
           mv caddy caddy-package/
@@ -59,7 +59,7 @@ jobs:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
         run: |
-          xcaddy build master  --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/WJQSERVER/caddy-ext/ratelimit@2412182247 --with github.com/caddy-dns/cloudflare --with github.com/mholt/caddy-l4
+          xcaddy build master  --with github.com/caddyserver/cache-handler --with github.com/ueffel/caddy-brotli --with github.com/caddyserver/transform-encoder --with github.com/WJQSERVER/caddy-ext/ratelimit@master --with github.com/caddy-dns/cloudflare --with github.com/mholt/caddy-l4
           mkdir -p caddy-package
           mkdir -p caddy-package/LICENSE
           mv caddy caddy-package/
