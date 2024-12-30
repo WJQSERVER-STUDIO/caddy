@@ -16,6 +16,14 @@
 
 ## 安装
 
+### systemd
+
+一键脚本安装
+
+```bash
+wget -O caddy-menu.sh https://raw.githubusercontent.com/WJQSERVER-STUDIO/tools-stable/main/program/caddy/caddy-menu.sh && chmod +x caddy-menu.sh && clear && ./caddy-menu.sh
+```
+
 ### Docker-CLI
     
 - Debian-slim构建
