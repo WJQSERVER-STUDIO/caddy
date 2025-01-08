@@ -185,7 +185,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: 构建Debian镜像
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v6.10.0
         with:
           file: ./${{ env.DOCKERFILE_DEBIAN }}
           platforms: linux/amd64,linux/arm64
@@ -196,7 +196,7 @@ jobs:
             ${{ env.IMAGE_NAME }}:debian
 
       - name: 构建Alpine镜像
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v6.10.0
         with:
           file: ./${{ env.DOCKERFILE_ALPINE }}
           platforms:
