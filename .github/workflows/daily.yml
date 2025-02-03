@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-        GO_VERSION: 1.23.4
+        GO_VERSION: 1.23.5
         E_VERSION: daily
     strategy:
       matrix:
